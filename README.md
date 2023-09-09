@@ -8,26 +8,23 @@ Discover how WBCE, intended for data balance, fell short in our performance eval
 
 
 
-Introduction
+**Introduction**
 
 Utilization of the DefectSegNet Model
 
-In this research, we employed the DefectSegNet model [14] for the purpose of semantic segmentation. This model is grounded in the U-Net and DenseNet image segmentation architectures.
+In this research, we employed the DefectSegNet model [14] for the purpose of semantic segmentation. This model is grounded in the U-Net and DenseNet image segmentation architectures. 
 
-Challenges with the WBCE Loss Function
+**Challenges with the WBCE Loss Function**
 
 However, it came to our attention that the utilization of the WBCE (Weighted Binary Cross Entropy) loss function, as originally proposed in [14], did not yield satisfactory results, particularly concerning the qualitative aspects of segmentation accuracy.
 
-Visual Representation of the Issue
+**Visual Representation of the Issue**
+To expound on this matter, we have included Figure 2 and Figure 3 herein. These visual representations portray the semantic segmentation predictions derived from both the distance map loss function and WBCE. The overlay of these segmentation masks on the ground truth (GT) images and TEM images serves to underscore the disparities, with a particular focus on the boundaries.
 
-To expound on this matter, we have included Figure 2 and Figure 3 herein, as well as supplementary figures. These visual representations portray the semantic segmentation predictions derived from both the distance map loss function and WBCE. The overlay of these segmentation masks on the ground truth (GT) images and TEM images serves to underscore the disparities, with a particular focus on the boundaries.
-
-Notable Disparities in Segmentation Quality
-
+**Notable Disparities in Segmentation Quality**
 It is evident that Figure 2(c) and Figure 3(c) exhibit more conspicuous areas denoted in dark blue, signifying false negatives, especially along the boundaries, when contrasted with Figure 2(d) and Figure 3(d). To underscore this distinction, we have demarcated specific areas in Figure 2(c) and 2(d) where this discrepancy is most pronounced. Furthermore, we have highlighted an artifact that appears more extended in Figure 3(c) compared to Figure 3(d). On a broader note, artifacts segmented utilizing the WBCE loss function manifest a greater breadth in contrast to those segmented using the distance map loss function. This observation alludes to a bias towards white and an inclination towards overprediction.
 
-Comparison of Loss Functions
-
+**Comparison of Loss Functions**
 In the preceding sections, we elucidated the intricacies of the Binary Cross Entropy (BCE) loss and the Weighted Binary Cross Entropy (WBCE) loss functions. These functions are designed to gauge the variance between actual and predicted image masks, considering class predictions and ground truth at individual pixel levels. The mathematical formulation for these functions is as follows:
 
 BCE (Binary Cross Entropy) Loss:
@@ -36,7 +33,7 @@ CE(p, p ̂) = -(p log(p ̂) + (1 - p) log(1 - p ̂))
 WBCE (Weighted Binary Cross Entropy) Loss:
 WBCE(p, p ̂) = -(βp log(p ̂) + (1 - p) log(1 - p ̂))
 
-Addressing the Issue
+**Addressing the Issue**
 
 Within our context, it becomes apparent that the WBCE loss function, instead of achieving an equilibrium between negative and white pixels, should place a more pronounced emphasis on the equitable treatment of white pixels within the dataset. However, it appears to be biased towards white and results in an undue tendency towards overprediction. To ameliorate this predicament, we have embraced a loss function that finds common application in the realm of biomedical image analysis. This loss function, referred to as the Distance Map Loss (DML), assigns higher weights to pixels situated in closer proximity to object boundaries, thus lending more weight to pixels in these regions. Following the formulation by Calivia et al., the Distance Map Loss (DML) for a given pixel is defined as:
 
@@ -47,6 +44,8 @@ In this equation, BCE signifies the binary cross-entropy loss, while ϕ derives 
 Superior Performance of the Distance Map Loss (DML)
 
 As clearly demonstrated through the visual representations in Figure 2 and Figure 3, the Distance Map Loss (DML) has exhibited superior qualitative performance compared to WBCE. Overall, it has proven to enhance segmentation quality within the scope of our study.
+
+**[14]	G. Roberts, S. Y. Haile, R. Sainju, D. J. Edwards, B. Hutchinson, and Y. Zhu, “Deep Learning for Semantic Segmentation of Defects in Advanced STEM Images of Steels,” Sci. Rep., vol. 9, no. 1, pp. 1–12, Sep. 2019.**
 
 
 
